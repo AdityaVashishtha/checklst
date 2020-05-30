@@ -1,6 +1,6 @@
 <template>
   <div class="task-list">
-  <h3 class="title">Up next</h3>
+    <h3 class="title">Up next</h3>
     <ul class="list-container">
       <TaskItem />
       <TaskItem />
@@ -30,5 +30,10 @@ export default {
 ul.list-container {
   box-sizing: border-box;
   height: 100%;
+}
+.task-list {
+  .title {
+    color: var(--fg-color);
+  }
 }
 </style>

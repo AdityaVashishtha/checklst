@@ -2,16 +2,16 @@
   <div class="columns">
     <div class="column is-two-fifths">
       <div class="is-hidden-mobile task-page">
-        <AddTask />
-      </div>
-    </div>
-    <div class="column is-half">
-      <div class="task-page">
         <UserWelcomeHeader />
         <SearchBar />
         <HorizontalScrollView />
+        <AddTask />
+      </div>
+    </div>
+    <div class="column is-three-fifths">
+      <div class="task-page list">
         <TaskList />
-        <div class="float-btn is-hidden-desktop">
+        <div class="float-btn">
           <button class="button is-danger is-large is-rounded">
             <span class="icon is-small">
               <i class="fas fa-plus"></i>
@@ -44,16 +44,24 @@ export default {
 
 <style lang="scss">
 .task-page {
-  background-color: #fff5f5;
+  background-color: var(--bg-color);
   padding: var(--l-px);
   height: calc(100vh-20px);
-  border-radius: var(--l-px);
-  margin-left: var(--xl-px);
-  margin-top: var(--xl-px);
+  max-height: 98vh;
+  border-radius: var(--m-px);
+}
+.task-page.list {
+  background-color: var(--bg-color);
+  max-height: 98vh;
+  border-radius: var(--m-px);
+  overflow-y: auto;
 }
 .float-btn {
   position: fixed;
   bottom: var(--xl-px);
   right: var(--xl-px);
+}
+.columns {
+  padding: 5px;
 }
 </style>

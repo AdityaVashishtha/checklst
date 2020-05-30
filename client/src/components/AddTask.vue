@@ -1,7 +1,6 @@
 <template>
   <div class="add-task">
     <div class="task-list">
-      <h3 class="title">Add Task</h3>
       <ul class="list-container">
         <div class="field">
           <label class="label">Task Name</label>
@@ -15,7 +14,7 @@
         <div class="field">
           <label class="label">Due Date (Optional)</label>
           <div class="control has-icons-left has-icons-right">
-            <input class="input is-medium" type="date" placeholder="e.g. Take tom for walk" />
+            <input class="input is-medium" type="date" />
             <span class="icon is-left has-text-danger">
               <i class="fas fa-calendar-alt"></i>
             </span>
@@ -76,5 +75,6 @@ ul.list-container {
   padding-right: var(--l-px);
   font-size: 0.75em;
   border-radius: var(--l-px);
+  color: var(--fg-color) !important;
 }
 </style>

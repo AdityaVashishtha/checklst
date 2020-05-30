@@ -28,5 +28,9 @@ export default {
     border-radius: 15px;
     justify-items: right;
   }
+
+  .title, .subtitle {
+    color: var(--fg-color);
+  }
 }
 </style>

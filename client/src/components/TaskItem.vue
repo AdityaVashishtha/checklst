@@ -43,16 +43,16 @@ export default {
 
 <style lang="scss">
 .task-item {
-  background-color: white;
+  background-color: var(--bg-color);  
   display: grid;
   grid-template-columns: 5fr 1fr;
   position: relative;
-  width: 100%;
-  border-radius: var(--l-px);
-  margin-bottom: var(--m-px);  
+  width: 100%;  
+  border-bottom: 1px solid transparent;    
   padding: var(--m-px);
   .title {
     font-size: 1.30em;
+    color: var(--fg-color);
   }
   .content {
     color: var(--fg-color);

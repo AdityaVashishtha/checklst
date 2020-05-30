@@ -20,23 +20,31 @@
     --purple: hsl(271, 100%, 71%);
     --blue: hsl(204, 71%, 53%);
     --light: rgba(0, 0, 0, 0.35);
-    --fg-color: rgba(0, 0, 0, 0.50);
+    --fg-color: rgba(0, 0, 0, 0.750);
     --bg-color: #FFF;
+    --purple-one: #753a88;
+    --red-one: #cc2b5e;
+    --main-bg: linear-gradient(45deg, var(--red-one), 45%, var(--purple-one));
+    --input-bg: --purple-one;
+    --input-fg: --fg-color;
 }
 
 
 .dark {
-    --body-color: rgb(51, 51, 51);
-    --accent-color: #006600;
-    --light-n-blue: rgb(0, 0, 0);   
-    --hig-color: hsl(348, 53%, 27%);
-    --mid-color: hsl(48, 47%, 25%);
-    --low-color: hsl(141, 47%, 21%);
-    --purple: hsl(271, 41%, 36%);
+    --hig-color: hsl(348, 86%, 61%);
+    --mid-color: hsl(48, 100%, 67%);
+    --low-color: hsl(141, 53%, 53%);
+    --purple: hsl(271, 100%, 71%);
     --blue: hsl(204, 71%, 53%);
-    --light: rgba(255, 255, 255, 0.35);
-    --fg-color: rgba(255, 255, 255, 0.50);
-    --bg-color: #555;
+    --light: rgba(0, 0, 0, 0.35);
+    --fg-color: rgba(255, 255, 255, 0.75);
+    --bg-color: #331e46;
+    --purple-one: #331e46;
+    --red-one: #684462;
+    --input-bg: --red-one;
+    --input-fg: white;
+    --main-bg: linear-gradient(45deg, var(--red-one), 45%, var(--purple-one));
+    --input-border: 1px solid var(--hig-color);
 }
 
 
@@ -70,6 +78,52 @@
     color: var(--light);
 }
 
+body, html{
+    background: var(--main-bg);
+    overflow: hidden !important;
+}
+
+input,
+select,
+textarea {
+    background-color: var(--input-bg) !important;
+    color: var(--input-fg) !important;
+    border: var(--input-border) !important;
+}
+
+::placeholder {
+    color: var(--input-fg) !important;
+    opacity: 0.65;
+}
+
+:-ms-input-placeholder {
+    color: var(--input-fg) !important;
+    opacity: 0.65;
+}
+
+::-ms-input-placeholder {
+    color: var(--input-fg) !important;
+    opacity: 0.65;
+}
+
 * {
     transition: all 100ms ease;
+
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.20);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.50);
 }

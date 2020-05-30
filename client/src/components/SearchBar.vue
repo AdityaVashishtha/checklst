@@ -19,8 +19,7 @@ export default {
 .search-bar {    
     padding-top: var(--xl-px);
     input {
-        border-radius: var(--l-px);
-        background-color: var(--light-n-blue);
+        border-radius: var(--l-px);      
     }
 }
 </style>

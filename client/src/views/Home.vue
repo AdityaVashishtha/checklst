@@ -13,9 +13,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-  body {
-    background-color: var(--body-color);
-  }
-</style>
