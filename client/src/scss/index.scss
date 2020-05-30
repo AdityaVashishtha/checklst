@@ -1,0 +1,75 @@
+@import url("../../node_modules/bulma/css/bulma.min.css");
+
+:root {
+    --body-color: #EFEFEF;
+    --accent-color: #97f597;
+    --light-n-blue: #CDD;
+    --avatar-size: 80px;
+    --xs-px: 2px;
+    --sm-px: 5px;
+    --m-px: 10px;
+    --l-px: 15px;
+    --xl-px: 20px;
+    --xl-px: 25px;
+    --category-card-size: 120px;
+    --gutter: 20px;
+    --task-item-size: 120px;
+    --hig-color: hsl(348, 86%, 61%);
+    --mid-color: hsl(48, 100%, 67%);
+    --low-color: hsl(141, 53%, 53%);
+    --purple: hsl(271, 100%, 71%);
+    --blue: hsl(204, 71%, 53%);
+    --light: rgba(0, 0, 0, 0.35);
+    --fg-color: rgba(0, 0, 0, 0.50);
+    --bg-color: #FFF;
+}
+
+
+.dark {
+    --body-color: rgb(51, 51, 51);
+    --accent-color: #006600;
+    --light-n-blue: rgb(0, 0, 0);   
+    --hig-color: hsl(348, 53%, 27%);
+    --mid-color: hsl(48, 47%, 25%);
+    --low-color: hsl(141, 47%, 21%);
+    --purple: hsl(271, 41%, 36%);
+    --blue: hsl(204, 71%, 53%);
+    --light: rgba(255, 255, 255, 0.35);
+    --fg-color: rgba(255, 255, 255, 0.50);
+    --bg-color: #555;
+}
+
+
+.g-1-color {
+    background-color: var(--low-color);
+    color: var(--light);
+}
+
+.r-1-color {
+    background-color: var(--hig-color);
+    color: var(--light);
+}
+
+.b-1-color {
+    background-color: var(--blue);
+    color: var(--light);
+}
+
+.d-1-color {
+    background-color: hsl(0, 0%, 29%);
+    color: var(--light);
+}
+
+.p-1-color {
+    background-color: var(--purple);
+    color: var(--light);
+}
+
+.y-1-color {
+    background-color: var(--mid-color);
+    color: var(--light);
+}
+
+* {
+    transition: all 100ms ease;
+}
