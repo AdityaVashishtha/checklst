@@ -11,7 +11,7 @@
     --l-px: 15px;
     --xl-px: 20px;
     --xl-px: 25px;
-    --category-card-size: 120px;
+    --category-card-size: 100px;
     --gutter: 20px;
     --task-item-size: 120px;
     --hig-color: hsl(348, 86%, 61%);
@@ -44,7 +44,7 @@
     --input-bg: --red-one;
     --input-fg: white;
     --main-bg: linear-gradient(45deg, var(--red-one), 45%, var(--purple-one));
-    --input-border: 1px solid var(--hig-color);
+    --input-border: 1px solid var(--red-one);
 }
 
 
@@ -78,9 +78,14 @@
     color: var(--light);
 }
 
-body, html{
-    background: var(--main-bg);
+html {
     overflow: hidden !important;
+}
+
+body {
+    background: var(--main-bg);
+    width: 100%;
+    height: 105vh;
 }
 
 input,
@@ -88,8 +93,8 @@ select,
 textarea {
     background-color: var(--input-bg) !important;
     color: var(--input-fg) !important;
-    border: var(--input-border) !important;
 }
+
 
 ::placeholder {
     color: var(--input-fg) !important;
@@ -126,4 +131,8 @@ textarea {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.50);
+}
+
+.dark .input, .dark select {
+    border: var(--input-border) !important;
 }

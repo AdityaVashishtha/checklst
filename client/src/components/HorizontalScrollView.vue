@@ -2,23 +2,25 @@
   <div class="horizontal-scroll">
     <div class="full hide-scroll">
       <ul class="hs">
-        <li class="item d-1-color" @click="changeMode">
+        <li
+          class="item"
+          v-bind:class="theme ? 'y-1-color' : 'd-1-color'"
+          @click="changeMode"
+        >
           <i class="fas fa-moon fa-2x"></i>
           <span v-if="theme">Go Light</span>
           <span v-else>Go Dark</span>
         </li>
-        <li class="item p-1-color">
-          <i class="fas fa-calendar-check fa-2x"></i>
-          Calendar
-        </li>
-        <li class="item g-1-color">
-          <i class="fas fa-moon fa-2x"></i>
-          Dark
-        </li>
-        <li class="item d-1-color">
-          <i class="fas fa-moon fa-2x"></i>
-          Dark
-        </li>
+        <label
+          @click="$emit('filter-todos',option.name)"
+          v-bind:key="option.name"
+          v-for="option in options"
+        >
+          <li class="item" v-bind:class="option.class">
+            <i class="fas fa-2x" v-bind:class="option.icon"></i>
+            {{option.name}}
+          </li>
+        </label>
       </ul>
     </div>
   </div>
@@ -29,7 +31,29 @@ export default {
   name: "HorizontalScrollView",
   data: function() {
     return {
-      theme: false
+      theme: false,
+      options: [
+        {
+          name: "Work",
+          class: "p-1-color",
+          icon: "fa-calendar-check"
+        },
+        {
+          name: "Personal",
+          class: "g-1-color",
+          icon: "fa-user-clock"
+        },
+        {
+          name: "Shopping",
+          class: "b-1-color",
+          icon: "fa-shopping-basket"
+        },
+        {
+          name: "Others",
+          class: "y-1-color",
+          icon: "fa-list"
+        }
+      ]
     };
   },
   methods: {
@@ -87,7 +111,7 @@ export default {
   grid-template-columns: 10px;
   grid-auto-flow: column;
   grid-auto-columns: var(--category-card-size);
-  grid-template-rows: minmax(calc(0.75*var(--category-card-size)), 1fr);
+  grid-template-rows: minmax(calc(0.75 * var(--category-card-size)), 1fr);
   overflow-x: scroll;
   scroll-snap-type: x proximity;
   padding-bottom: calc(0.75 * var(--gutter));

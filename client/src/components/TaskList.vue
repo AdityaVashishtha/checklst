@@ -1,16 +1,12 @@
 <template>
   <div class="task-list">
-    <h3 class="title">Up next</h3>
-    <ul class="list-container">
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
+    <h3 class="title">{{listTitle ? listTitle : 'Todos'}}</h3>
+    <ul class="list-container" v-bind:key="task._id" v-for="task in this.tasks">
+      <TaskItem
+        v-on:task-action="$emit('task-action',task._id, task.status)"
+        v-on:delete-task="$emit('delete-task',task._id)"
+        v-bind:task="task"
+      />
     </ul>
   </div>
 </template>
@@ -22,6 +18,10 @@ export default {
   name: "TaskList",
   components: {
     TaskItem
+  },
+  props: ["tasks", "listTitle"],
+  mounted() {
+    this.tasks.sort((a, b) => b.status - a.status);
   }
 };
 </script>
