@@ -2,11 +2,7 @@
   <div class="horizontal-scroll">
     <div class="full hide-scroll">
       <ul class="hs">
-        <li
-          class="item"
-          v-bind:class="theme ? 'y-1-color' : 'd-1-color'"
-          @click="changeMode"
-        >
+        <li class="item" v-bind:class="theme ? 'y-1-color' : 'd-1-color'" @click="changeMode">
           <i class="fas fa-moon fa-2x"></i>
           <span v-if="theme">Go Light</span>
           <span v-else>Go Dark</span>
@@ -34,6 +30,11 @@ export default {
       theme: false,
       options: [
         {
+          name: "All",
+          class: "r-1-color",
+          icon: "fa-book"
+        },
+        {
           name: "Work",
           class: "p-1-color",
           icon: "fa-calendar-check"
@@ -49,7 +50,7 @@ export default {
           icon: "fa-shopping-basket"
         },
         {
-          name: "Others",
+          name: "Other",
           class: "y-1-color",
           icon: "fa-list"
         }
@@ -143,12 +144,12 @@ h3 {
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .hide-scroll > .hs::-webkit-scrollbar {
-  display: none;
+  // display: none;
 }
 
 /* Hide scrollbar for IE and Edge */
 .hide-scroll > .hs {
-  -ms-overflow-style: none;
+  // -ms-overflow-style: none;
 }
 
 .hs > li,

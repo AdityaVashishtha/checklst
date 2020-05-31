@@ -13,12 +13,12 @@
             </div>
           </div>
 
-          <div class="control">
+          <div class="control" v-if="task.dueDate">
             <div class="tags has-addons">
               <span class="tag is-dark">
                 <i class="fas fa-calendar-check"></i>
               </span>
-              <span class="tag is-primary is-light">{{task.dueDate}}</span>
+              <span class="tag is-primary is-light">{{formatDate(task.dueDate)}}</span>
             </div>
           </div>
           <div class="control">
@@ -56,7 +56,25 @@
 <script>
 export default {
   name: "TaskItem",
-  props: ["task"]
+  props: ["task"],
+  methods: {
+    formatDate(dateStr) {
+      let date = new Date(dateStr);
+      const dateTimeFormat = new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+      });
+      const [
+        { value: month },
+        ,
+        { value: day },
+        ,
+        { value: year }
+      ] = dateTimeFormat.formatToParts(date);
+      return `${day} ${month} ${year}`;
+    }
+  }
 };
 </script>
 

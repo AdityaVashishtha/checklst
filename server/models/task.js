@@ -1,17 +1,9 @@
 const mongoose = require("mongoose");
 
 let TaskSchema = new mongoose.Schema({
-    title: {
+    name: {
         type: String,
         required: true
-    },
-    description: {
-        type: String
-    },
-    priority: {
-        type: String,
-        default: "LOW",
-        enum: ["HIGH", "LOW", "MEDIUM"]
     },
     dueDate: {
         type: Date,
@@ -19,15 +11,15 @@ let TaskSchema = new mongoose.Schema({
             return this.dueDate >= Date.now()
         }
     },
-    duration: {
-        type: Number,
-        required: () => {
-            return this.duration > 0;
-        }
-    },
-    category: {
+    label: {
         type: mongoose.SchemaTypes.String,
-        ref: 'Category.title'
+        default: "other",
+        enum: ["other", "personal", "work", "shopping"]
+    },
+    status: {
+        type: Number,
+        default: 1,
+        enum: [0, 1, 2] // 0-Completed 1-In Progress 2-New/Todo
     }
 });
 

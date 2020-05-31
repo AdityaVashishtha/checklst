@@ -1,5 +1,7 @@
 <template>
   <div class="add-task">
+    <hr class="is-hidden-tablet" />
+    <div class="title is-hidden-tablet">Add Task</div>
     <div class="task-list">
       <ul class="list-container">
         <div class="field">
@@ -21,15 +23,21 @@
         <div class="field">
           <label class="label">Due Date (Optional)</label>
           <div class="control has-icons-left has-icons-right">
-            <input v-model="dueDate" class="input is-medium" type="date" />
+            <input
+              v-model="dueDate"
+              v-bind:class="errors.name.isInvalid ? 'is-danger' : '' "
+              class="input is-medium"
+              type="date"
+            />
             <span class="icon is-left has-text-danger">
               <i class="fas fa-calendar-alt"></i>
             </span>
           </div>
+          <p class="help is-danger" v-if="errors.date.isInvalid">{{errors.date.msg}}</p>
         </div>
         <div class="field">
           <label class="label">Select Label</label>
-          <div class="control  has-icons-left has-icons-right is-expanded">
+          <div class="control has-icons-left has-icons-right is-expanded">
             <span class="icon is-left has-text-danger">
               <i class="fas fa-tag"></i>
             </span>
@@ -59,13 +67,16 @@ export default {
         name: {
           isInvalid: false,
           msg: "Name is required"
+        },
+        date: {
+          isInvalid: false,
+          msg: "Date is incorrect"
         }
       },
       name: "",
       dueDate: "",
       status: 1,
-      label: "other",
-      id: 0
+      label: "other"
     };
   },
   methods: {
@@ -74,16 +85,22 @@ export default {
         name: this.name,
         status: this.status,
         label: this.label,
-        _id: Math.round(Math.random() * 1000),
         dueDate: this.dueDate
       };
-      if (newTask.name.trim().length == 0) {
-        this.errors.name.isInvalid = true;
-      } else {
+      if (this.validateInput(newTask)) {
         this.errors.name.isInvalid = false;
         this.$emit("add-task", newTask);
         this.name = "";
+        this.dueDate = "";
       }
+    },
+    validateInput(task) {
+      if (task.name.trim().length == 0) {
+        this.errors.name.isInvalid = true;
+        return false;
+      }
+      this.errors.name.isInvalid = false;
+      return true;
     }
   }
 };
@@ -93,6 +110,10 @@ export default {
 ul.list-container {
   box-sizing: border-box;
   height: 100%;
+}
+
+.title {
+  color: var(--fg-color) !important;
 }
 
 .label {

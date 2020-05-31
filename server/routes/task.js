@@ -6,9 +6,10 @@ const {
 
 const Task = require("../models/task");
 const middleware = require("../middleware/validator");
+const authMiddleware = require("../middleware/auth");
 const TASK = "/";
 
-router.get(TASK, (req, res) => {
+router.get(TASK, authMiddleware, (req, res) => {
     Task.find((err, result) => {
         if (err) {
             res.send("EROR");
@@ -18,7 +19,7 @@ router.get(TASK, (req, res) => {
     });
 });
 
-router.get(TASK + ":id", (req, res) => {
+router.get(TASK + ":id", authMiddleware, (req, res) => {
     let id = req.params["id"];
     if (id) {
         Task.findById(id, (err, result) => {
@@ -33,13 +34,47 @@ router.get(TASK + ":id", (req, res) => {
     }
 });
 
-router.post(TASK, middleware.validators.taskValidator, (req, res) => {
+router.delete(TASK + ":id", authMiddleware, (req, res) => {
+    let _id = req.params["id"];
+    if (_id) {
+        Task.deleteOne({
+            _id
+        }, (err, result) => {
+            if (err) {
+                res.status(422).json(err);
+            } else {
+                res.json(result);
+            }
+        });
+    } else {
+        res.json([]);
+    }
+});
+
+router.post(TASK, authMiddleware, middleware.validators.taskValidator, (req, res) => {
     let taskModel = new Task(req.body);
     taskModel.save((err, product) => {
         if (!err) {
             res.json(product);
         } else {
-            res.json(err);
+            res.status(422).json(err);
+        }
+    });
+});
+
+router.put(TASK, authMiddleware, middleware.validators.taskUpdateValidator, (req, res) => {
+    let query = {
+        _id: req.body._id
+    };
+    let doc = {
+        status: req.body.status
+    }
+    let taskModel = new Task(req.body);
+    Task.updateOne(query, req.body, (err, data) => {
+        if (!err) {
+            res.json(data);
+        } else {
+            res.status(422).json(err);
         }
     });
 });

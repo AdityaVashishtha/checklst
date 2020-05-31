@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <Task v-bind:tasks="tasks" />    
+    <Task v-bind:tasks="tasks" />
   </div>
 </template>
 
 <script>
 import Task from "../components/Task";
-import { getData } from "../services/task-service";
+import { getTasks } from "../services/task-service";  
 
 export default {
   name: "Home",
@@ -15,8 +15,16 @@ export default {
   },
   data() {
     return {
-      tasks: getData()
-    }
+      tasks: []
+    };
   },
+  created() {
+    getTasks()
+      .then(response => {
+        this.tasks = response.data.filter(task => task.name);        
+        console.log(this.tasks);
+      })
+      .catch(err => console.log(err));
+  }
 };
 </script>

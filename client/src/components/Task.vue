@@ -10,16 +10,20 @@
     </div>
     <div class="column is-three-fifths">
       <div class="task-page list">
+        <UserWelcomeHeader class="is-hidden-tablet" />
+        <SearchBar class="is-hidden-tablet" v-on:search-todo="searchTodos" />
+        <HorizontalScrollView class="is-hidden-tablet" v-on:filter-todos="filterTodos" />
         <TaskList
           v-on:task-action="handleTaskAction"
           v-on:delete-task="deleteTask"
           v-bind:tasks="mutableTasks"
           v-bind:listTitle="listTitle"
         />
+        <AddTask class="is-hidden-tablet" v-on:add-task="addTask" />
         <div class="float-btn">
-          <button class="button is-danger is-large is-rounded">
+          <button @click="logout" class="button is-danger is-large is-rounded">
             <span class="icon is-small">
-              <i class="fas fa-plus"></i>
+              <i class="fas fa-sign-out-alt"></i>
             </span>
           </button>
         </div>
@@ -36,7 +40,9 @@ import TaskList from "./TaskList";
 import AddTask from "./AddTask";
 
 import { escapeRegex } from "../services/util";
-
+import { addTasks } from "../services/task-service";
+import { getTasks, deleteTasks, updateTasks } from "../services/task-service";
+import { logout } from "../services/auth-service";
 export default {
   name: "Task",
   components: {
@@ -50,52 +56,102 @@ export default {
   data: function() {
     return {
       mutableTasks: this.tasks,
-      listTitle: "Up Next"
+      tempTasks: [],
+      listTitle: "Up Next",
+      searchStr: "All"
     };
   },
   methods: {
     searchTodos(event) {
       let searchString = escapeRegex(event.target.value.toLowerCase());
       if (searchString.trim() != "") {
-        this.mutableTasks = this.tasks.filter(task =>
+        this.mutableTasks = this.tempTasks.filter(task =>
           task.name.toLowerCase().match(searchString)
         );
         this.listTitle = "Searching " + searchString + "...";
       } else {
-        this.mutableTasks = this.tasks;
+        this.mutableTasks = this.tempTasks;
         this.listTitle = "Up Next";
       }
     },
     filterTodos(searchString) {
-      if (searchString.trim() != "") {
-        this.mutableTasks = this.tasks.filter(task =>
+      this.searchStr = searchString;
+      if (searchString.trim() != "" && searchString != "All") {
+        this.mutableTasks = this.tempTasks.filter(task =>
           task.label.toLowerCase().match(searchString.toLowerCase())
         );
         this.listTitle = searchString;
       } else {
-        this.mutableTasks = this.tasks;
+        this.searchStr = "All";
+        this.mutableTasks = this.tempTasks;
         this.listTitle = "Up Next";
       }
     },
     handleTaskAction(id, status) {
       if (id) {
-        this.mutableTasks = this.mutableTasks.map(task => {
-          if (task._id == id) {
-            task.status = status == 1 ? 0 : 1;
-          }
-          return task;
-        });
-        this.mutableTasks.sort((a, b) => b.status - a.status);
+        updateTasks({ _id: id, status: status == 1 ? 0 : 1 })
+          .then(resp => {
+            if (resp) {
+              this.updateTaskList();
+            }
+          })
+          .catch(err => {
+            this.$buefy.toast.open("Some error occurred!");
+            console.log(err);
+          });
       }
     },
     deleteTask(id) {
-      this.mutableTasks = this.mutableTasks.filter(task => {
-        return task._id != id;
-      });
+      deleteTasks(id)
+        .then(resp => {
+          if (resp) {
+            this.updateTaskList();
+          }
+        })
+        .catch(err => {
+          this.$buefy.toast.open("Some error occurred!");
+          console.log(err);
+        });
     },
     addTask(task) {
-      this.mutableTasks = [...this.mutableTasks,task]
+      addTasks(task)
+        .then(resp => {
+          if (resp) this.updateTaskList();
+        })
+        .catch(err => {
+          this.$buefy.toast.open("Some error occurred!");
+          console.log(err);
+        });
+    },
+    updateTaskList() {
+      getTasks()
+        .then(response => {
+          this.mutableTasks = response.data.filter(task => task.name);
+          this.mutableTasks.sort((a, b) => b.status - a.status);
+          this.tempTasks = this.mutableTasks;
+          this.filterTodos(this.searchStr);
+        })
+        .catch(err => {
+          this.$buefy.toast.open("Some error occurred!");
+          console.log(err);
+        });
+    },
+    logout() {
+      logout();
+      this.$router.replace({ name: "Login" });
     }
+  },
+  mounted() {
+    getTasks()
+      .then(response => {
+        this.mutableTasks = response.data.filter(task => task.name);
+        this.mutableTasks.sort((a, b) => b.status - a.status);
+        this.tempTasks = this.mutableTasks;
+      })
+      .catch(err => {
+        this.$buefy.toast.open("Some error occurred!");
+        console.log(err);
+      });
   }
 };
 </script>
@@ -120,6 +176,6 @@ export default {
   right: var(--xl-px);
 }
 .columns {
-  padding: 5px;
+  padding: 10px;
 }
 </style>

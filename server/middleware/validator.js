@@ -4,7 +4,7 @@ const {
     validationResult
 } = require('express-validator');
 
-function errorUsageMiddleWare(req, res, next) {        
+function errorUsageMiddleWare(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -17,11 +17,14 @@ function errorUsageMiddleWare(req, res, next) {
 module.exports = middlewares = {
     validators: {
         taskValidator: [
-            body('title').exists().notEmpty().trim().escape(),
-            body('description').trim().escape(),
-            body('priority').notEmpty().trim().matches(/\b(?:high|low|medium)\b/).customSanitizer((str) => str.toUpperCase()),
+            body('name').exists().notEmpty().trim().escape(),
+            body('label').notEmpty().trim().matches(/\b(?:other|personal|work|shopping)\b/).customSanitizer((str) => str.toLowerCase()),
             body('dueDate').trim().escape(),
-            body('duration'),
+            errorUsageMiddleWare
+        ],
+        taskUpdateValidator: [
+            body('_id').exists().notEmpty().trim().escape(),
+            body('status').exists().notEmpty().custom(status => status >= 0 && status <= 2),
             errorUsageMiddleWare
         ]
     }

@@ -1,3 +1,7 @@
+let url = 'http://localhost:3000/api/v1';
+const axios = require("axios");
+let getHeader = require("./auth-service").getHeader;
+
 module.exports = {
     getData: function () {
         let tasks = [{
@@ -28,12 +32,26 @@ module.exports = {
                 label: 'others'
             }
         ];
-        tasks.map(e => {
-            // const formattedDate = moment('19 Oct 2017').format('YYYYMMDD');
-            // console.log(formattedDate);
-
-            return e;
-        });
         return tasks;
+    },
+    getTasks: function () {
+        return axios.get(url + '/task', {
+            headers: getHeader()
+        });
+    },
+    addTasks: function (task) {
+        return axios.post(url + '/task', task, {
+            headers: getHeader()
+        });
+    },
+    deleteTasks: function (_id) {
+        return axios.delete(url + '/task/' + _id, {
+            headers: getHeader()
+        });
+    },
+    updateTasks: function (task) {
+        return axios.put(url + '/task', task, {
+            headers: getHeader()
+        });
     }
 }
