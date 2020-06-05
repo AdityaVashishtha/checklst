@@ -20,6 +20,9 @@ let TaskSchema = new mongoose.Schema({
         type: Number,
         default: 1,
         enum: [0, 1, 2] // 0-Completed 1-In Progress 2-New/Todo
+    },
+    userId: {
+        type: mongoose.SchemaTypes.String        
     }
 });
 

@@ -1,6 +1,7 @@
 let url = 'http://localhost:3000/api/v1';
 const axios = require("axios");
 let getHeader = require("./auth-service").getHeader;
+let getUsername = require("./auth-service").getUsername;
 
 module.exports = {
     getData: function () {
@@ -40,6 +41,7 @@ module.exports = {
         });
     },
     addTasks: function (task) {
+        task.userId = getUsername();
         return axios.post(url + '/task', task, {
             headers: getHeader()
         });

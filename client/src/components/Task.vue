@@ -144,9 +144,12 @@ export default {
   mounted() {
     getTasks()
       .then(response => {
-        this.mutableTasks = response.data.filter(task => task.name);
-        this.mutableTasks.sort((a, b) => b.status - a.status);
-        this.tempTasks = this.mutableTasks;
+        if (response && response.data) {
+          console.log(response.data)
+          this.mutableTasks = response.data.filter(task => task.name);
+          this.mutableTasks.sort((a, b) => b.status - a.status);
+          this.tempTasks = this.mutableTasks;
+        }
       })
       .catch(err => {
         this.$buefy.toast.open("Some error occurred!");

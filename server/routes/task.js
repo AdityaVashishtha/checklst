@@ -10,13 +10,21 @@ const authMiddleware = require("../middleware/auth");
 const TASK = "/";
 
 router.get(TASK, authMiddleware, (req, res) => {
-    Task.find((err, result) => {
-        if (err) {
-            res.send("EROR");
-        } else {
-            res.json(result);
-        }
-    });
+    if (req.userData) {
+        Task.find({
+            userId: req.userData.username
+        }, (err, result) => {
+            if (err) {
+                console.log(err);
+                
+                res.status(422).send();
+            } else {
+                res.json(result);
+            }
+        });
+    } else {
+        res.status(401).json();
+    }
 });
 
 router.get(TASK + ":id", authMiddleware, (req, res) => {
