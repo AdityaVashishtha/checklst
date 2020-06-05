@@ -1,58 +1,98 @@
 <template>
   <div class="task-item">
     <div class="content">
-      <span class="title">Take input from stuff things that are great</span>
+      <span class="title" v-bind:class="task.status != 1 ? 'is-done' : ''">{{task.name}}</span>
       <div class="tags">
-        <span class="label b-1-color">
-          Label
-          <i class="fas fa-tags"></i>
-        </span>
-        <span class="label y-1-color">In Progress</span>
-        <span class="label has-text-grey">22 May 2020</span>
-      </div>
-    </div>
-    <div class="options">
-      <div class="dropdown is-right is-hoverable">
-        <div class="dropdown-trigger">
-          <button
-            class="button is-light is-primary is-rounded"
-            aria-haspopup="true"
-            aria-controls="dropdown-menu"
-          >
-            <span class="icon is-small">
-              <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
-            </span>
-          </button>
-        </div>
-        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-          <div class="dropdown-content">
-            <a class="dropdown-item">Dropdown item</a>
-            <a class="dropdown-item">Other dropdown item</a>
+        <div class="field is-grouped is-grouped-multiline">
+          <div class="control">
+            <div class="tags has-addons">
+              <span class="tag is-dark">
+                <i class="fas fa-tags"></i>
+              </span>
+              <span class="tag is-info is-light">{{task.label}}</span>
+            </div>
+          </div>
+
+          <div class="control" v-if="task.dueDate">
+            <div class="tags has-addons">
+              <span class="tag is-dark">
+                <i class="fas fa-calendar-check"></i>
+              </span>
+              <span class="tag is-primary is-light">{{formatDate(task.dueDate)}}</span>
+            </div>
+          </div>
+          <div class="control">
+            <div class="tags has-addons">
+              <span class="tag is-dark">
+                <i class="fas fa-info-circle"></i>
+              </span>
+              <span class="tag is-light" v-bind:class="task.status ? 'is-warning': 'is-success'">
+                <span>{{task.status ? 'In Progress': 'Completed'}}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="options">
+      <button
+        class="button is-info is-light"
+        v-bind:class="task.status == 1 ? 'is-info': 'is-success'"
+        @click="$emit('task-action',task._id,task.status)"
+      >
+        <span class="icon is-small">
+          <i class="fas fa-check fa-lg"></i>
+        </span>
+      </button>
+      <button class="button is-danger is-light" @click="$emit('delete-task',task._id)">
+        <span class="icon is-small">
+          <i class="fas fa-trash-alt"></i>
+        </span>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TaskItem"
+  name: "TaskItem",
+  props: ["task"],
+  methods: {
+    formatDate(dateStr) {
+      let date = new Date(dateStr);
+      const dateTimeFormat = new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+      });
+      const [
+        { value: month },
+        ,
+        { value: day },
+        ,
+        { value: year }
+      ] = dateTimeFormat.formatToParts(date);
+      return `${day} ${month} ${year}`;
+    }
+  }
 };
 </script>
 
 <style lang="scss">
 .task-item {
-  background-color: white;
+  background-color: var(--bg-color);
   display: grid;
   grid-template-columns: 5fr 1fr;
   position: relative;
   width: 100%;
-  border-radius: var(--l-px);
-  margin-bottom: var(--m-px);  
+  border-bottom: 1px solid transparent;
   padding: var(--m-px);
   .title {
-    font-size: 1.30em;
+    font-size: 1.3em;
+    color: var(--fg-color);
+  }
+  .is-done {
+    text-decoration: line-through;
   }
   .content {
     color: var(--fg-color);
@@ -67,20 +107,16 @@ export default {
   .options {
     text-align: center;
     justify-self: right;
+    button {
+      margin-right: var(--xs-px);
+      margin-bottom: var(--xs-px);
+    }
   }
 
   .tags {
-    margin-top: 15px;
-    .label {
-      display: inline;
-      margin: 0px var(--xs-px);
-      padding: var(--xs-px);
-      padding-left: var(--l-px);
-      padding-right: var(--l-px);
-     // background-color: rgba($color: #000, $alpha: 0.15);
-      font-size: 0.75em;
-      border-radius: var(--l-px);
-      //color: var(--fg-color);
+    margin-top: 5px;
+    .field > .tags {
+      font-size: 0.5em;
     }
   }
 }

@@ -2,15 +2,22 @@
   <div class="user-header">
     <div>
       <h1 class="subtitle">Hi,</h1>
-      <h2 class="title">User</h2>
+      <h2 class="title">{{username}}</h2>
     </div>
     <div class="avatar">👩🏻‍🦱</div>
   </div>
 </template>
 
 <script>
+import { getUsername } from "../services/auth-service";
 export default {
-  name: "UserWelcomeHeader"
+  name: "UserWelcomeHeader",
+  data() {
+    return { username: "User" };
+  },
+  mounted() {
+    this.username = getUsername();
+  }
 };
 </script>
 
@@ -27,6 +34,11 @@ export default {
     background-color: var(--accent-color);
     border-radius: 15px;
     justify-items: right;
+  }
+
+  .title,
+  .subtitle {
+    color: var(--fg-color);
   }
 }
 </style>
